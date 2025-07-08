@@ -1,12 +1,5 @@
 # zenith_app
 
----
-
-## 📱 README do Frontend/Mobile (`mobile-service-app`)
-
-```markdown
-# 📱 Mobile – App de Serviços Residenciais
-
 Aplicativo móvel desenvolvido em Flutter para conectar clientes e prestadores de serviços residenciais. Os usuários podem buscar profissionais, solicitar atendimentos, acompanhar o status e enviar documentos para validação.
 
 ---
