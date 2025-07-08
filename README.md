@@ -1,16 +1,52 @@
 # zenith_app
 
-A new Flutter project.
+---
 
-## Getting Started
+## 📱 README do Frontend/Mobile (`mobile-service-app`)
 
-This project is a starting point for a Flutter application.
+```markdown
+# 📱 Mobile – App de Serviços Residenciais
 
-A few resources to get you started if this is your first Flutter project:
+Aplicativo móvel desenvolvido em Flutter para conectar clientes e prestadores de serviços residenciais. Os usuários podem buscar profissionais, solicitar atendimentos, acompanhar o status e enviar documentos para validação.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🚀 Tecnologias
+
+- Flutter 3.x
+- Dart
+- Dio (HTTP)
+- Provider (gerência de estado)
+- Flutter Secure Storage
+- Image Picker (upload de documentos)
+
+---
+
+## 📂 Estrutura do Projeto
+
+- `screens/` – Telas do app (login, cadastro, home, atendimentos)
+- `models/` – Modelos de dados (User, Servico, Atendimento)
+- `services/` – Integração com APIs (Auth, Atendimentos, etc.)
+- `widgets/` – Componentes reutilizáveis
+
+---
+
+## 📌 Funcionalidades
+
+- Login e cadastro de usuários
+- Envio e verificação de documentos
+- Listagem de prestadores por categoria
+- Solicitação e acompanhamento de atendimentos
+- Edição e visualização de perfil
+
+---
+
+## ▶️ Como rodar
+
+```bash
+# Clonar o projeto
+git clone https://github.com/seu-usuario/mobile-service-app
+
+# Rodar o app
+flutter pub get
+flutter run
