@@ -1,7 +1,26 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc/auth/auth_bloc.dart';
+import 'services/auth_service.dart';
+import 'screens/home_screen.dart';
+import 'screens/login_screen.dart';
+import 'screens/profile_screen.dart';
+import 'screens/splash_screen.dart';
+import 'utils/app_theme.dart';
 void main() {
-  runApp(const MyApp());
+  runApp(
+    // Prover o serviço de autenticação para a árvore de widgets
+    RepositoryProvider(
+      create: (context) => AuthService(),
+      child: BlocProvider(
+        create: (context) => AuthBloc(
+          authService: RepositoryProvider.of<AuthService>(context),
+        )..add(AuthSessionStarted()),
+        child: const MyApp(),
+      ),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -11,26 +30,38 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      title: 'Zenith App',
+      theme: AppTheme.lightTheme,
+      // Um `BlocBuilder` decide qual tela mostrar baseado no estado de autenticação
+      home: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is AuthSuccess) {
+            // Navega para a HomeScreen DEPOIS que a animação de splash terminar
+            // A animação em si é controlada dentro da SplashScreen
+            // Vamos dar um tempo para a animação acontecer antes de trocar de tela
+            Future.delayed(const Duration(milliseconds: 2000), () {
+              Navigator.of(context).pushReplacementNamed('/home');
+            });
+          }
+        },
+        // O child decide qual tela mostrar inicialmente
+        child: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            // Se não estiver logado, vai para a tela de login
+            if (state is AuthInitial || state is AuthFailure) {
+              return const LoginScreen();
+            }
+            // Senão, mostra a tela de splash (que vai animar e depois navegar)
+            return const SplashScreen();
+          },
+        ),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      // Rotas para navegação nomeada
+      routes: {
+        '/login': (context) => const LoginScreen(),
+        '/home': (context) => const HomeScreen(),
+        '/profile': (context) => const ProfileScreen(),
+      },
     );
   }
 }
